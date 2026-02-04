@@ -109,3 +109,11 @@ uint16_t Renderer::getGameObjectColor(GameObjectType type)
     }
     return 0;
 }
+
+void Renderer::renderText(String text, Vector2 textPosition, Vector2 backgroundSize, size_t textSize, uint16_t textColor)
+{
+    display.fillRect(textPosition.x, textPosition.y, backgroundSize.x, backgroundSize.y, ST7735_BLACK);
+    display.setTextSize(textSize);
+    display.setCursor(textPosition.x, textPosition.y);
+    display.print(text);
+}

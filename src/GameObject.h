@@ -15,8 +15,8 @@ enum GameObjectType
 
 struct Vector2
 {
-    int x;
-    int y;
+    short x;
+    short y;
     bool operator==(const Vector2& other) const {
         return x == other.x && y == other.y;
     }

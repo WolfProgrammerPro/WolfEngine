@@ -33,7 +33,7 @@ bool Physics::hasLetToObjectMove(MapsManager& mapsManager, Vector2 position, Vec
 {
     GameObject object = GameObject(position, size);
 
-    for (unsigned int i = 0; i < MAX_GAME_OBJECTS_PER_LEVEL; i++)
+    for (unsigned int i = 0; i < mapsManager.getCurrentMapSize(); i++)
     {
         GameObject collision = getCollision(mapsManager, object);
         if (collision.getType() != NONE && collision.getType() != KEY && collision.getType() != FINISH)

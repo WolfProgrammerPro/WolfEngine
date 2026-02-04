@@ -10,6 +10,7 @@
 #include <PlayerCollider.h>
 #include <MapsManager.h>
 #include <Arduino.h>
+#include <FPSCounter.h>
 
 
 
@@ -25,4 +26,5 @@ private:
     Renderer renderer;
     Player player;
     MapsManager mapsManager;
+    FPSCounter fpsCounter;
 };
