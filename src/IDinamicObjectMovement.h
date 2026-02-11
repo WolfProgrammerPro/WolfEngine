@@ -8,8 +8,8 @@ class IDinamicObjectMovement
 {
 public:
     virtual ~IDinamicObjectMovement() = default;
-    virtual void updatePosition(MapsManager& mapsManager) = 0;  // Чисто виртуальный
-    virtual void resetPosition() = 0;  // Чисто виртуальный
+    virtual void updatePosition(MapsManager& mapsManager) = 0;
+    virtual void resetPosition() = 0;
 protected:
-    virtual Vector2 getMovementDirection() = 0;  // Чисто виртуальный
+    virtual Vector2 getMovementDirection() = 0;
 };
