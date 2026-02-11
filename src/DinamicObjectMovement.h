@@ -13,8 +13,6 @@ public:
     void resetPosition() override;
     
 protected:
-    Vector2 getMovementDirection() override;
-    
     GameObject& gameObject;
     Physics physics;
     Vector2 starterPositionOnReset;

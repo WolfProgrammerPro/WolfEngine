@@ -3,7 +3,6 @@
 
 #include <Renderer.h>
 #include <GameObject.h>
-#include <Player.h>
 #include <Utils.h>
 #include <InputManager.h>
 #include <PlayerMovement.h>
@@ -22,7 +21,6 @@ public:
     void loop();
 private:
     Renderer renderer;
-    Player player;
     MapsManager mapsManager;
     FPSCounter fpsCounter;
 };

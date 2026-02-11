@@ -39,40 +39,29 @@ void Renderer::render(const GameObject* const& gameObjects, size_t size)
 
 
 
-void Renderer::renderPlayer(const GameObject& player)
-{
-    Vector2 playerPosition = player.getPosition();
-    if (playerPosition != oldPlayerPosition)
-    {
-        if (oldPlayerPosition.x != -1)
-        {
-            int sizeX = player.getSize().x * SIZE_MULTIPLIER;
-            int sizeY = player.getSize().y * SIZE_MULTIPLIER;
-            int oldPlayerPositionX = oldPlayerPosition.x * SIZE_MULTIPLIER;
-            int oldPlayerPositionY = (MAP_HEIGHT - oldPlayerPosition.y - player.getSize().y) * SIZE_MULTIPLIER;
-            display.fillDisplayRect(oldPlayerPositionX, oldPlayerPositionY, sizeX, sizeY, COLOR_BLACK);
-        }
-        oldPlayerPosition = playerPosition;
-        renderObject(player);
-    }
-}
 
 
 void Renderer::renderObject(const GameObject& gameObject)
 {
-    GameObjectType type = gameObject.getType();
-    if (type != NONE)
+    
+    if (needRenderObject(gameObject))
     {
-        uint16_t color = getGameObjectColor(type);
+        uint16_t color = getGameObjectColor(gameObject.getType());
         Vector2 pos = gameObject.getPosition();
+
         int sizeX = gameObject.getSize().x * SIZE_MULTIPLIER;
         int sizeY = gameObject.getSize().y * SIZE_MULTIPLIER;
+        int oldPositionX = gameObject.getLastRendererdPosition().x * SIZE_MULTIPLIER;
+        int oldPositionY = (MAP_HEIGHT - gameObject.getLastRendererdPosition().y - gameObject.getSize().y) * SIZE_MULTIPLIER;
+        display.fillDisplayRect(oldPositionX, oldPositionY, sizeX, sizeY, COLOR_BLACK);
+        gameObject.writeLastRenderedPosition();
+        gameObject.writeLastRenderedActive();
         int screenX = pos.x * SIZE_MULTIPLIER;
         int screenY = (MAP_HEIGHT - pos.y - gameObject.getSize().y) * SIZE_MULTIPLIER;
         
         if (gameObject.isActive())
         {
-            if (type == DOOR)
+            if (gameObject.getType() == DOOR)
             {
                 display.fillDisplayRect(screenX, screenY, sizeX, sizeY, COLOR_BLACK);
                 display.drawDisplayRect(screenX, screenY, sizeX, sizeY, color);
@@ -86,7 +75,7 @@ void Renderer::renderObject(const GameObject& gameObject)
         {
             display.fillDisplayRect(screenX, screenY, sizeX, sizeY, COLOR_BLACK);
         }
-    }  
+    }
 }
 
 uint16_t Renderer::getGameObjectColor(GameObjectType type)
@@ -110,4 +99,13 @@ void Renderer::renderText(const char* text, Vector2 textPosition, Vector2 backgr
     display.setDisplayCursorPosition(textPosition.x, textPosition.y);
     display.printText(text);
     
+}
+
+
+bool Renderer::needRenderObject(const GameObject& gameObject)
+{
+    if (gameObject.getType() == NONE) return false;
+    if (gameObject.getPosition() == gameObject.getLastRendererdPosition() && gameObject.isActive() == gameObject.getLastRenderedActive()) return false;
+
+    return true;
 }

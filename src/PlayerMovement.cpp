@@ -29,23 +29,3 @@ Vector2 PlayerMovement::getMovementDirection()
     return Vector2{x,y};
 
 }
-
-void PlayerMovement::updatePosition(MapsManager& mapsManager)
-{
-    if (getMillis() - lastMove >= moveCooldown)
-    {
-        lastMove = getMillis();
-        Vector2 movementDirection = getMovementDirection();
-        Vector2 newPosition = gameObject.getPosition() + movementDirection;
-        if (!physics.hasLetToObjectMove(mapsManager, newPosition, gameObject.getSize()))
-        {
-            gameObject.setPosition(newPosition);
-        }
-    }
-}
-
-void PlayerMovement::resetPosition()
-{
-    gameObject.setPosition(starterPositionOnReset);
-    lastMove = 0;
-}

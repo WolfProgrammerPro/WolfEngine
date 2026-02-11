@@ -9,14 +9,17 @@ DinamicObject::DinamicObject()
     , collider(nullptr)
     , dinamicObjectMovement(nullptr) {}
 
-DinamicObject::DinamicObject(const Vector2& pos, const Vector2& size, GameObjectType type)
-    : gameObject(pos, size, type)
-    , collider(nullptr)
-    , dinamicObjectMovement(nullptr) {}
+DinamicObject::DinamicObject(const Vector2& pos, const Vector2& size, GameObjectType type): gameObject(pos, size, type), collider(nullptr), dinamicObjectMovement(nullptr)
+{
+    //Serial.begin(9600);
+    //Serial.println("initialized");
+}
 
 
 
-void DinamicObject::update(MapsManager& mapsManager, Renderer& renderer) {
+void DinamicObject::update(MapsManager& mapsManager, Renderer& renderer)
+{
+    //Serial.println("updated");
     if (dinamicObjectMovement != nullptr) {
         dinamicObjectMovement->updatePosition(mapsManager);
     }
