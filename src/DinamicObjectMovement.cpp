@@ -1,16 +1,16 @@
 #include <DinamicObjectMovement.h>
 
-DinamicObjectMovement::DinamicObjectMovement(DinamicObject& object, Vector2 positionOnReset, unsigned long cooldown) : gameObject(object), starterPositionOnReset(positionOnReset), moveCooldown(cooldown){};
+DinamicObjectMovement::DinamicObjectMovement(GameObject& object, Vector2 positionOnReset, unsigned long cooldown) 
+    : gameObject(object), starterPositionOnReset(positionOnReset), moveCooldown(cooldown) {}
 
 void DinamicObjectMovement::updatePosition(MapsManager& mapsManager)
 {
-    if (millis() - lastMove >= moveCooldown)
+    if (getMillis() - lastMove >= moveCooldown)
     {
-        lastMove = millis();
+        lastMove = getMillis();
         Vector2 movementDirection = getMovementDirection();
-        Vector2 newPlayerPosition = gameObject.getPosition() + movementDirection;
-
-        moveTo(mapsManager, newPlayerPosition);
+        Vector2 newPosition = gameObject.getPosition() + movementDirection;
+        moveTo(mapsManager, newPosition);
     }
 }
 

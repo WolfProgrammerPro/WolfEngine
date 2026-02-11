@@ -1,6 +1,5 @@
 #pragma once
-
-#include <Arduino.h>
+#include <Utils.h>
 
 enum GameObjectType
 {
@@ -40,7 +39,7 @@ class GameObject{
         bool active;
         Vector2 size;
     public:
-        GameObject() : position({0,0}), type(NONE), id(0), active(false), size({0,0}) {};
+        GameObject() : position({-1,-1}), type(NONE), id(0), active(false), size({0,0}) {};
         GameObject(Vector2 pos, Vector2 _size, GameObjectType _type = WALL, unsigned short _id = 0) : position(pos), type(_type), id(_id), active(true), size(_size) {};
         #pragma GCC diagnostic pop
         Vector2 getPosition() const {return position;}
@@ -49,6 +48,7 @@ class GameObject{
         bool isActive() const {return active;}
         unsigned short getId() const {return id;}
         inline void setActive(bool newValue) {active = newValue;}
+        void setPosition(Vector2 pos);
 
     protected:
         void setPositionValue(Vector2 value) {position = value;}

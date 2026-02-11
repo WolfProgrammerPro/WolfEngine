@@ -1,30 +1,25 @@
 #pragma once
 
-#include <Arduino.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_ST7735.h>
-#include <SPI.h>
 #include <Utils.h>
-
+#include <Board.h>
 #include <GameObject.h>
+#include <Display.h>
 
 
-#define TFT_CS   10
-#define TFT_RST  8
-#define TFT_DC   9
+
 
 class Renderer
 {
 public:
     Renderer();
-    void init();
     void setScreenColor(uint16_t color);
     void render(const GameObject* const& gameObjects, size_t size);
     void renderPlayer(const GameObject& player);
     void renderObject(const GameObject& gameObject);
-    void renderText(String text, Vector2 textPosition, Vector2 backgroundSize, size_t textSize, uint16_t textColor);
+    void renderText(const char* text, Vector2 textPosition, Vector2 backgroundSize, size_t textSize, uint16_t textColor);
+    inline void initDisplay() {display.initDisplay();}
     uint16_t getGameObjectColor(GameObjectType type);
 private:
-    Adafruit_ST7735 display;
+    Display display;
     Vector2 oldPlayerPosition;
 };

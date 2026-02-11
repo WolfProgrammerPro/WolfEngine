@@ -1,45 +1,134 @@
 #include <Physics.h>
+#include <MapsManager.h>
+#include <DinamicObject.h>
 
-
-
-GameObject Physics::getCollision(MapsManager& mapsManager, GameObject& object)
+GameObject Physics::getCollision(MapsManager& mapsManager, const GameObject& object)
 {
-    Vector2 objectPosition = object.getPosition();
-    Vector2 objectSize = object.getSize();
+    const GameObject* dinamicObjectCollider = checkDinamicObjectGroupOnCollision(
+        mapsManager.getDinamicObjects(), 
+        mapsManager.getDinamicObjectsLenght(), 
+        object);
     
-    for (unsigned int i = 0; i < mapsManager.getCurrentMapSize(); i++)
+    if (dinamicObjectCollider != nullptr)
     {
-        GameObject& checkingObject = mapsManager.getCurrentMap()[i];
-        if (!checkingObject.isActive() || checkingObject.getType() == NONE || &checkingObject == &object) {
-            continue;
-        }
-        
-        Vector2 checkingObjectPosition = checkingObject.getPosition();
-        Vector2 checkingObjectSize = checkingObject.getSize();
-        
-        bool collisionInX = (objectPosition.x < checkingObjectPosition.x + checkingObjectSize.x) && (objectPosition.x + objectSize.x > checkingObjectPosition.x);
-        bool collisionInY = (objectPosition.y < checkingObjectPosition.y + checkingObjectSize.y) && (objectPosition.y + objectSize.y > checkingObjectPosition.y);
-        
-        if (collisionInX && collisionInY)
-        {
-            return checkingObject;
-        }
+        return *dinamicObjectCollider;
     }
+
+    const GameObject* staticObjectCollider = checkGameObjectGroupOnCollision(
+        mapsManager.getStaticObjects(),
+        mapsManager.getStaticObjectsLenght(), 
+        object);
     
+    if (staticObjectCollider != nullptr)
+    {
+        return *staticObjectCollider;
+    }
+
     return GameObject();
 }
 
-bool Physics::hasLetToObjectMove(MapsManager& mapsManager, Vector2 position, Vector2 size)
+const GameObject* Physics::checkDinamicObjectGroupOnCollision(
+    DinamicObject** objectGroup, 
+    size_t groupLength, 
+    const GameObject& toucher)
 {
-    GameObject object = GameObject(position, size);
-
-    for (unsigned int i = 0; i < mapsManager.getCurrentMapSize(); i++)
+    if (objectGroup == nullptr) return nullptr;
+    
+    for (size_t i = 0; i < groupLength; i++)
     {
-        GameObject collision = getCollision(mapsManager, object);
-        if (collision.getType() != NONE && collision.getType() != KEY && collision.getType() != FINISH)
-        {
-            return true;
+        if (objectGroup[i] == nullptr || !objectGroup[i]->isActive()) {
+            continue;
+        }
+        
+        const GameObject& obj = objectGroup[i]->getGameObject();
+        if (obj.getType() == NONE) {
+            continue;
+        }
+        
+        if (checkGameObjectOnCollision(toucher, obj)) {
+            return &obj;
         }
     }
+    return nullptr;
+}
+
+const GameObject* Physics::checkGameObjectGroupOnCollision(
+    const GameObject* objectGroup, 
+    size_t groupLength, 
+    const GameObject& toucher)
+{
+    if (objectGroup == nullptr) return nullptr;
+    
+    for (size_t i = 0; i < groupLength; i++)
+    {
+        if (!objectGroup[i].isActive() || objectGroup[i].getType() == NONE) {
+            continue;
+        }
+        if (checkGameObjectOnCollision(toucher, objectGroup[i])) {
+            return &objectGroup[i];
+        }
+    }
+    return nullptr;
+}
+
+bool Physics::hasLetToObjectMove(MapsManager& mapsManager, const Vector2& position, const Vector2& size)
+{
+    GameObject tempObject(position, size);
+
+    for (size_t i = 0; i < mapsManager.getStaticObjectsLenght(); i++)
+    {
+        const GameObject& obj = mapsManager.getStaticObjects()[i];
+        
+        if (!obj.isActive()) {
+            continue;
+        }
+        
+        GameObjectType type = obj.getType();
+        if (type == WALL || type == DOOR) {
+            if (checkGameObjectOnCollision(tempObject, obj)) {
+                return true;
+            }
+        }
+    }
+
+    DinamicObject** dinamicObjects = mapsManager.getDinamicObjects();
+    size_t dinamicCount = mapsManager.getDinamicObjectsLenght();
+    
+    if (dinamicObjects != nullptr) {
+        for (size_t i = 0; i < dinamicCount; i++)
+        {
+            if (dinamicObjects[i] == nullptr || !dinamicObjects[i]->isActive()) {
+                continue;
+            }
+            
+            const GameObject& obj = dinamicObjects[i]->getGameObject();
+            GameObjectType type = obj.getType();
+            
+            if (type == WALL || type == DOOR) {
+                if (checkGameObjectOnCollision(tempObject, obj)) {
+                    return true;
+                }
+            }
+        }
+    }
+    
     return false;
+}
+
+bool Physics::checkGameObjectOnCollision(const GameObject& obj1, const GameObject& obj2)
+{
+    if (!obj2.isActive() || obj2.getType() == NONE || &obj2 == &obj1)
+    {
+        return false;
+    }
+    
+    Vector2 pos1 = obj1.getPosition();
+    Vector2 size1 = obj1.getSize();
+    Vector2 pos2 = obj2.getPosition();
+    Vector2 size2 = obj2.getSize();
+    
+    bool collisionInX = (pos1.x < pos2.x + size2.x) && (pos1.x + size1.x > pos2.x);
+    bool collisionInY = (pos1.y < pos2.y + size2.y) && (pos1.y + size1.y > pos2.y);
+    
+    return collisionInX && collisionInY;
 }

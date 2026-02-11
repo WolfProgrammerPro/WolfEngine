@@ -1,6 +1,6 @@
 #include <Player.h>
 
-void Player::update(Renderer& renderer, MapsManager& mapsManager)
+void Player::update(MapsManager& mapsManager, Renderer& renderer)
 {
     playerMovement.updatePosition(mapsManager);
     playerCollider.checkCollisions(renderer, mapsManager, playerMovement);

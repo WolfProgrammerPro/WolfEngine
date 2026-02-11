@@ -9,7 +9,6 @@
 #include <PlayerMovement.h>
 #include <PlayerCollider.h>
 #include <MapsManager.h>
-#include <Arduino.h>
 #include <FPSCounter.h>
 
 
@@ -19,7 +18,6 @@ class Game
 {
 public:
     Game();
-    ~Game();
     void start();
     void loop();
 private:

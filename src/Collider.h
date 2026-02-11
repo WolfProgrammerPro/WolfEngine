@@ -1,20 +1,20 @@
 #pragma once
 
-#include <Collider.h>
-#include <DinamicObject.h>
+#include <GameObject.h>
 #include <Renderer.h>
-#include <MapsManager.h>
 #include <DinamicObjectMovement.h>
 #include <Physics.h>
-#include <GameManager.h>
+
+
+class IGameManager;
 
 class Collider
 {
 public:
-    Collider(DinamicObject& object) : gameObject(object) {};
-    virtual void checkCollisions(Renderer& renderer, MapsManager& mapsManager, DinamicObjectMovement& objectMovement);
+    Collider(GameObject& object, IGameManager* _gameManager) : gameObject(object), gameManager(_gameManager) {};
+    virtual void checkCollisions(Renderer& renderer, const GameObject*staticGameObjects, const GameObject* dinamicGameObjects, unsigned short staticObjectsCount, unsigned short dinamicObjectsCount, DinamicObjectMovement& objectMovement);
 protected:
-    DinamicObject& gameObject;
+    GameObject& gameObject;
     Physics physics;
-    GameManager gameManager;
+    IGameManager* gameManager;
 };
