@@ -5,7 +5,7 @@
 #include <Rendering\Renderer.h>
 
 DinamicObject::DinamicObject() 
-    : gameObject(Vector2{0,0}, Vector2{0,0}, NONE)
+    : gameObject(vec2Zero, vec2Zero, NONE)
     , collider(nullptr)
     , dinamicObjectMovement(nullptr) {
     }

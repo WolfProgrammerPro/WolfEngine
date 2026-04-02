@@ -8,7 +8,7 @@
 class Player
 {
 public:
-    Player() : gameObject(Vector2{0,0}, Vector2{0,0}, PLAYER), playerCollider(gameObject), playerMovement(gameObject) {};
+    Player() : gameObject(vec2Zero, vec2Zero, PLAYER), playerCollider(gameObject), playerMovement(gameObject) {};
     Player(Vector2 pos, Vector2 _size) : gameObject(pos, _size, PLAYER), playerCollider(gameObject), playerMovement(gameObject) {};
         
     void update(MapsManager& mapsManager, Renderer& renderer);

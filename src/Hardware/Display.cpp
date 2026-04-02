@@ -10,7 +10,7 @@ void Display::initDisplay()
     display.initR(INITR_BLACKTAB);
     delay(100);
     
-    display.setRotation(1);
+    display.setRotation(-1);
     delay(100);
     
     display.fillScreen(BACKGROUND_COLOR);

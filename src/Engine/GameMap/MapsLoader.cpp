@@ -31,6 +31,9 @@ void MapsLoader::loadLevels(GameObject staticObjects[LEVEL_COUNT][MAX_GAME_OBJEC
     createGameObject(Vector2{12,6}, Vector2{1,14}, WALL, 4, staticObjects, staticObjectsLenghts);
     createGameObject(Vector2{8,2}, Vector2{2,2}, KEY, 4, staticObjects, staticObjectsLenghts, 2);
     createGameObject(Vector2{12,4}, Vector2{1,2}, DOOR, 4, staticObjects, staticObjectsLenghts, 2);
+
+    createGameObject(Vector2{15,4}, Vector2{2,2}, FINISH, 5, staticObjects, staticObjectsLenghts);
+    createMovingWall(Vector2{12,0}, Vector2{1,5}, 5, dinamicObjects, dinamicObjectsLenghts);
 }
 
 void MapsLoader::createMovingWall(Vector2 position, Vector2 size, unsigned short level, DinamicObject* dinamicObjects[LEVEL_COUNT][MAX_GAME_OBJECTS_PER_LEVEL], size_t* dinamicObjectsLenghts)

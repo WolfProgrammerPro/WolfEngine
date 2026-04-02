@@ -18,6 +18,7 @@ protected:
     Vector2 starterPositionOnReset;
     unsigned long lastMove = 0;
     unsigned long moveCooldown;
+    Vector2 movementDirection;
     short getMovementSpeed() const {return movementSpeed;}
 private:
     void moveTo(MapsManager& mapsManager, Vector2 position);

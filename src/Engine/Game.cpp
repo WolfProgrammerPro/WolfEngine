@@ -14,4 +14,5 @@ void Game::loop()
 {
     mapsManager.updateDinamicObjects(renderer);
     fpsCounter.showFPS(renderer);
+    
 }
