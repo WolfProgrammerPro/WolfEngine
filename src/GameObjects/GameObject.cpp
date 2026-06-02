@@ -1,33 +1,26 @@
-#include <GameObjects\GameObject.h>
+#include <GameObjects\GameObject.hpp>
 
-unsigned short GameObject::nextId = 1;
+#include <GameObjects\Components\Collider.hpp>
+#include <Engine\GameMap\Map.hpp>
+#
 
 
-void GameObject::setPosition(Vector2 pos)
+
+unsigned long GameObject::nextId = 1;
+
+
+void GameObject::update(Map& map, MapStats& stats)
 {
-    if (isNewPositionValid(pos))
+    if (moving)
     {
-        setPositionValue(pos);
+        movement.update(physics, transform, collider, uniqueId, map);
     }
+    collider.update(physics, map, transform, uniqueId, stats);
+    
+    
 }
-
-void GameObject::writeLastRenderedPosition() const
+void GameObject::setMovementDirection(MovementDirector& director)
 {
-    lastRenderedPosition = position;
+    movement.setMovementDirector(director);
+    moving = true;
 }
-
-bool GameObject::isNewPositionValid(Vector2 pos)
-{
-    return (pos.x >= 0 && pos.x <= (float)MAP_WIDTH - getSize().x && pos.y >= 0 && pos.y <= (float)MAP_HEIGHT - getSize().y);
-}
-
-void GameObject::writeLastRenderedActive() const
-{
-    lastRenderedActive = active;
-}
-
-GameObject::~GameObject()
-{
-
-}
-

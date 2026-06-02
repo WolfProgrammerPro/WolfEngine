@@ -1,53 +1,26 @@
-#include <Physics\Physics.h>
-#include <Engine\GameMap\MapsManager.h>
-#include <GameObjects\DinamicObject.h>
+#include <Physics\Physics.hpp>
+#include <Engine\GameMap\Map.hpp>
+#include <GameObjects\GameObject.hpp>
 
-GameObject Physics::getCollision(MapsManager& mapsManager, const GameObject& object, unsigned short toucherUniqueId)
+GameObject* Physics::getCollision(Map& map, Transform& transform, unsigned short toucherUniqueId)
 {
-    const GameObject* dinamicObjectCollider = checkDinamicObjectGroupOnCollision(mapsManager.getDinamicObjects(), mapsManager.getDinamicObjectsLenght(), object, toucherUniqueId);
+    GameObject* collider = checkGameObjectGroupOnCollision(map.getObjects(), transform, toucherUniqueId);
     
-    if (dinamicObjectCollider != nullptr)
+    if (collider != nullptr)
     {
-        return *dinamicObjectCollider;
+        return collider;
     }
 
-    const GameObject* staticObjectCollider = checkGameObjectGroupOnCollision(mapsManager.getStaticObjects(),mapsManager.getStaticObjectsLenght(), object, toucherUniqueId);
     
-    if (staticObjectCollider != nullptr)
-    {
-        return *staticObjectCollider;
-    }
-
-    return GameObject();
-}
-
-const GameObject* Physics::checkDinamicObjectGroupOnCollision(DinamicObject** objectGroup, size_t groupLength, const GameObject& toucher, unsigned short toucherUniqueId)
-{
-    if (objectGroup == nullptr) return nullptr;
-    
-    for (size_t i = 0; i < groupLength; i++)
-    {
-        if (objectGroup[i] == nullptr || !objectGroup[i]->isActive()) {
-            continue;
-        }
-        
-        const GameObject& obj = objectGroup[i]->getGameObject();
-        if (obj.getType() == NONE) {
-            continue;
-        }
-        
-        if (checkGameObjectOnCollision(toucher, obj, toucherUniqueId)) {
-            return &obj;
-        }
-    }
     return nullptr;
 }
 
-const GameObject* Physics::checkGameObjectGroupOnCollision(const GameObject* objectGroup, size_t groupLength, const GameObject& toucher, unsigned short toucherUniqueId)
+
+GameObject* Physics::checkGameObjectGroupOnCollision(GameObject* objectGroup, Transform& toucher, unsigned short toucherUniqueId)
 {
     if (objectGroup == nullptr) return nullptr;
     
-    for (size_t i = 0; i < groupLength; i++)
+    for (size_t i = 0; i < MAX_GAME_OBJECTS_PER_LEVEL; i++)
     {
         if (!objectGroup[i].isActive() || objectGroup[i].getType() == NONE) {
             continue;
@@ -59,52 +32,42 @@ const GameObject* Physics::checkGameObjectGroupOnCollision(const GameObject* obj
     return nullptr;
 }
 
-bool Physics::hasLetToObjectMove(MapsManager& mapsManager, const Vector2& position, const Vector2& size,  unsigned short objectId)
+bool Physics::hasLetToObjectMove(Map& map, Vector2 position, Vector2 size, unsigned short objectId)
 {
-    GameObject tempObject(position, size);
-    for (size_t i = 0; i < mapsManager.getStaticObjectsLenght(); i++)
+    for (size_t i = 0; i < MAX_GAME_OBJECTS_PER_LEVEL; i++)
     {
-        const GameObject& obj = mapsManager.getStaticObjects()[i];
-        
-        if (!obj.isActive()) {
+        GameObject& obj = map.getObjects()[i];
+        if (!obj.isActive() || obj.getType() == NONE || obj.getUniqueId() == objectId || !obj.isColliding()) {
             continue;
         }
         
-        GameObjectType type = obj.getType();
-        if (type == WALL || type == DOOR) {
-            if (checkGameObjectOnCollision(tempObject, obj, objectId)) 
-            {
-                return true;
-            }
+        Vector2 objPos = obj.getPosition();
+        Vector2 objSize = obj.getSize();
+
+        bool leftLess = position.x < objPos.x + objSize.x;
+        bool rightGreater = position.x + size.x > objPos.x;
+        bool collisionInX = leftLess && rightGreater;
+    
+        bool topLess = position.y < objPos.y + objSize.y;
+        bool bottomGreater = position.y + size.y > objPos.y;
+        bool collisionInY = topLess && bottomGreater;
+
+    
+        
+        if (collisionInX && collisionInY) {
+            return false;
         }
     }
-    DinamicObject** dinamicObjects = mapsManager.getDinamicObjects();
-    size_t dinamicCount = mapsManager.getDinamicObjectsLenght();
-    
-    if (dinamicObjects != nullptr) {
-        for (size_t i = 0; i < dinamicCount; i++)
-        {
-            if (dinamicObjects[i] == nullptr || !dinamicObjects[i]->isActive()) {
-                continue;
-            }
-            
-            const GameObject& obj = dinamicObjects[i]->getGameObject();
-            if (checkGameObjectOnCollision(tempObject, obj, objectId))
-            {
-                return true;
-            }
-        }
-    }
-    
-    return false;
+    return true;
 }
 
-bool Physics::checkGameObjectOnCollision(const GameObject& obj1, const GameObject& obj2, unsigned short obj1UniqueId)
+bool Physics::checkGameObjectOnCollision(Transform& obj1 , GameObject& obj2, unsigned short obj1UniqueId)
 {
-    if (!obj2.isActive() || obj2.getType() == NONE || &obj2 == &obj1 || obj2.getUniqueId() == obj1UniqueId)
+    if (!obj2.isActive() || obj2.getType() == NONE || obj2.getUniqueId() == obj1UniqueId)
     {
         return false;
     }
+    
     Vector2 object1Position = obj1.getPosition();
     Vector2 object1Size = obj1.getSize();
     Vector2 object2Position = obj2.getPosition();
@@ -114,10 +77,11 @@ bool Physics::checkGameObjectOnCollision(const GameObject& obj1, const GameObjec
     bool rightGreater = object1Position.x + object1Size.x > object2Position.x;
     bool collisionInX = leftLess && rightGreater;
     
-    bool topLess = object1Position.y< object2Position.y + object2Size.y;
+    bool topLess = object1Position.y < object2Position.y + object2Size.y;
     bool bottomGreater = object1Position.y + object1Size.y > object2Position.y;
     bool collisionInY = topLess && bottomGreater;
 
     
     return collisionInX && collisionInY;
+    
 }

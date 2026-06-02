@@ -1,16 +1,15 @@
-#include <Engine\Game.h>
+#include <Arduino.h>
+
+#include <Engine\Game.hpp>
 
 Game game;
 
 void setup()
 {
-    Serial.begin(115200);
-    delay(2000);
-    
-    game.start();
+  game.start();
 }
 
-void loop()
+void loop() 
 {
-    game.loop();  
+  game.update();
 }

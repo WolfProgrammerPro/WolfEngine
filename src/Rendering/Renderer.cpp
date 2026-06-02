@@ -1,6 +1,6 @@
-#include <Rendering\Renderer.h>
+#include <Rendering\Renderer.hpp>
 
-Renderer::Renderer() : oldPlayerPosition(Vector2{-1,-1}) {}
+Renderer::Renderer() {}
 
 
 void Renderer::setScreenColor(uint16_t color)
@@ -11,20 +11,19 @@ void Renderer::setScreenColor(uint16_t color)
 
 
 
-void Renderer::render(const GameObject* const& gameObjects, size_t size)
+void Renderer::render(GameObject* gameObjects)
 {
 
-    for (size_t i = 0; i < size; i++)
+    for (size_t i = 0; i < MAX_GAME_OBJECTS_PER_LEVEL; i++)
     {
-        const GameObject& object = gameObjects[i];
+        GameObject& object = gameObjects[i];
         renderObject(object);
     }
 }
 
 
 
-
-void Renderer::renderObject(const GameObject& gameObject)
+void Renderer::renderObject(GameObject& gameObject)
 {
     if (needRenderObject(gameObject))
     {
@@ -64,17 +63,17 @@ void Renderer::renderText(const char* text, Vector2 textPosition, Vector2 backgr
 }
 
 
-bool Renderer::needRenderObject(const GameObject& gameObject)
+bool Renderer::needRenderObject(GameObject& gameObject)
 {
     if (gameObject.getType() == NONE) return false;
-    if (gameObject.getPosition() == gameObject.getLastRendererdPosition() && gameObject.isActive() == gameObject.getLastRenderedActive()) return false;
+    if (gameObject.getPosition() == gameObject.getLastRenderedPosition() && gameObject.isActive() == gameObject.getLastRenderedActive()) return false;
 
     return true;
 }
 
-void Renderer::fillOldGameObjectPositionToBackgroundColor(const GameObject& gameObject)
+void Renderer::fillOldGameObjectPositionToBackgroundColor(GameObject& gameObject)
 {
-    Vector2 lastPosition = gameObject.getLastRendererdPosition();
+    Vector2 lastPosition = gameObject.getLastRenderedPosition();
     
     if (lastPosition.x >= 0 && lastPosition.x <= MAP_WIDTH && lastPosition.y >= 0 && lastPosition.y <= MAP_HEIGHT)
     {

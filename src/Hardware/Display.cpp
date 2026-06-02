@@ -1,4 +1,4 @@
-#include <Hardware\Display.h>
+#include <Hardware\Display.hpp>
 
 Display::Display() : display(TFT_CS, TFT_DC, TFT_RST)
 {

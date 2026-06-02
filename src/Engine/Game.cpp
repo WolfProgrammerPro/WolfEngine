@@ -1,18 +1,15 @@
-#include <Engine\Game.h>
-
-Game::Game(){}
+#include <Engine\Game.hpp>
 
 void Game::start()
 {
     initBoard();
+    restarter.init(mapsManager);
+    mapsManager.init(restarter);
     renderer.initDisplay();
     renderer.setScreenColor(COLOR_BLACK);
-    mapsManager.init(renderer);
 }
 
-void Game::loop()
+void Game::update()
 {
-    mapsManager.updateDinamicObjects(renderer);
-    fpsCounter.showFPS(renderer);
-    
+    mapsManager.update(renderer);
 }

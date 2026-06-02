@@ -1,4 +1,4 @@
-#include <Engine\GameTextures.h>
+#include <Engine\GameTextures.hpp>
 
 
 const uint16_t* GameTextures::getTexturePixelsByObjectType(GameObjectType type)

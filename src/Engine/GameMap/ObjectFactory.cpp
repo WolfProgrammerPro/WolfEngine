@@ -1,50 +1,47 @@
-#include <Engine\GameMap\ObjectFactory.h>
+#include <Engine\GameMap\ObjectFactory.hpp>
 
-void ObjectFactory::createMovingWall(Vector2 position, Vector2 size, unsigned short level, DinamicObject* dinamicObjects[LEVEL_COUNT][MAX_GAME_OBJECTS_PER_LEVEL], size_t* dinamicObjectsLenghts)
-{
-    DinamicObject* wall = new DinamicObject(position, size, WALL);
-    MovingWallMovement* wallMovement = new MovingWallMovement(wall->getGameObject(), Vector2{-1, 0}, 0.25f ,300);
-    wall->setMovement(wallMovement);
-    createDinamicObject(wall, level, dinamicObjects, dinamicObjectsLenghts);
-}
 
-void ObjectFactory::createDinamicObject(DinamicObject* object, unsigned short level, DinamicObject* dinamicObjects[LEVEL_COUNT][MAX_GAME_OBJECTS_PER_LEVEL], size_t* dinamicObjectsLenghts)
-{
-    if (level > 0 && level <= LEVEL_COUNT)
-    {
-        dinamicObjects[level-1][dinamicObjectsLenghts[level-1]] = object;
-        dinamicObjectsLenghts[level-1]++;
-    }
-}
 
-void ObjectFactory::createGameObject(Vector2 position, Vector2 size, GameObjectType type, unsigned short level, unsigned short id, GameObject staticObjects[LEVEL_COUNT][MAX_GAME_OBJECTS_PER_LEVEL], size_t* staticObjectsLenghts)
+void ObjectFactory::createPlayer(GameObject* objects, int index, Vector2 position)
 {
-    if (level > 0 && level <= LEVEL_COUNT)
-    {
-        staticObjects[level-1][staticObjectsLenghts[level-1]] = GameObject(position, size, type, id);
-        staticObjectsLenghts[level-1]++;
-    }
-}
-
-void ObjectFactory::createFallingBlock(Vector2 position, Vector2 size, unsigned short level, DinamicObject* dinamicObjects[LEVEL_COUNT][MAX_GAME_OBJECTS_PER_LEVEL], size_t* dinamicObjectsLenghts)
-{
-    DinamicObject* wall = new DinamicObject(position, size, WALL);
-    MovingWallMovement* wallMovement = new MovingWallMovement(wall->getGameObject(), Vector2{0, -1}, MINIMAL_STEP_ON_MAP ,PHYSICS_2D_FALL_DELAY);
-    wall->setMovement(wallMovement);
-    createDinamicObject(wall, level, dinamicObjects, dinamicObjectsLenghts);
-}
-
-DinamicObject* ObjectFactory::createPlayer()
-{
-    DinamicObject* player = new DinamicObject(
-        Vector2{STARTER_PLAYER_POSITION_X, STARTER_PLAYER_POSITION_Y}, 
-        Vector2{PLAYER_SIZE_X, PLAYER_SIZE_Y}, 
-        PLAYER
-    );
     
-    PlayerMovement* playerMovement = new PlayerMovement(player->getGameObject());
-    player->setMovement(playerMovement);
-    PlayerCollider* playerCollider = new PlayerCollider(player->getGameObject());
-    player->setCollider(playerCollider);
-    return player;
+    createObject(objects, index, position, Vector2{PLAYER_SIZE_X, PLAYER_SIZE_Y});
+    objects[index].setType(PLAYER);
+    objects[index].setMovementDirection(playerMovementDirector);
+    objects[index].setColliderEventor(playerColliderEventor);
+    objects[index].setMovementSpeed(PLAYER_SPEED);
+    objects[index].setMovementCooldown(JOYSTICK_READ_MINIMAL_COOLDOWN);
+}
+
+void ObjectFactory::createWall(GameObject* objects, int index, Vector2 position, Vector2 size)
+{
+    createObject(objects, index, position, size);
+    objects[index].setType(WALL);
+}
+
+void ObjectFactory::createKey(GameObject* objects, int index, Vector2 position, int interactionIndex)
+{
+    createObject(objects,index, position, Vector2{KEY_SIZE, KEY_SIZE});
+    objects[index].setType(KEY);
+    objects[index].setInteractionIndex(interactionIndex);
+    objects[index].offColliding();
+}
+
+void ObjectFactory::createDoor(GameObject* objects, int index, Vector2 position, Vector2 size, int interactionIndex)
+{
+    createObject(objects, index, position, size);
+    objects[index].setType(DOOR);
+    objects[index].setInteractionIndex(interactionIndex);
+}
+
+void ObjectFactory::createObject(GameObject* objects, int index, Vector2 position, Vector2 size)
+{
+    new(&objects[index]) GameObject(position, size);
+}
+
+void ObjectFactory::createFinish(GameObject* objects, int index, Vector2 position)
+{
+    createObject(objects, index, position, Vector2{1,1});
+    objects[index].setType(FINISH);
+    objects[index].offColliding();
 }
