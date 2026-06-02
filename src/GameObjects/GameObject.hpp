@@ -31,7 +31,14 @@ private:
 public:
     static unsigned long nextId;
     GameObject() {type = NONE;}
-    GameObject(Vector2 position, Vector2 size, GameObjectType objectType = NONE) {transform.setPosition(position); transform.setSize(size); uniqueId = nextId++;}
+    GameObject(Vector2 position, Vector2 size, GameObjectType objectType = NONE)
+    {
+        transform.setPosition(position);
+        transform.setSize(size);
+        uniqueId = nextId++;
+        graphicsComponent.writeLastRenderedPosition(Vector2{-1, -1});
+        graphicsComponent.writeLastRenderedActive(false);
+    }
     void setMovementDirection(MovementDirector& director);
     Vector2 getSize() {return transform.getSize();}
     Vector2 getPosition() {return transform.getPosition();}
@@ -45,7 +52,16 @@ public:
     unsigned long getUniqueId() const {return uniqueId;}
 
     void update(Map& map, MapStats& stats);
-    void reset() {graphicsComponent.writeLastRenderedActive(false); graphicsComponent.writeLastRenderedPosition(vec2Zero);}
+    void reset()
+    {
+        type = NONE;
+        active = true;
+        moving = false;
+        colliding = true;
+        interactionIndex = 0;
+        graphicsComponent.writeLastRenderedActive(false);
+        graphicsComponent.writeLastRenderedPosition(Vector2{-1, -1});
+    }
     void setInteractionIndex(int index) {interactionIndex = index;}
     int getInteractionIndex() const {return interactionIndex;}
     bool isColliding() const {return colliding;}

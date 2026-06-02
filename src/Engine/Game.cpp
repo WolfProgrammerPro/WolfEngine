@@ -12,4 +12,5 @@ void Game::start()
 void Game::update()
 {
     mapsManager.update(renderer);
+    fps.showFPS(renderer);
 }

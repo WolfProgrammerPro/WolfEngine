@@ -13,7 +13,6 @@ void Renderer::setScreenColor(uint16_t color)
 
 void Renderer::render(GameObject* gameObjects)
 {
-
     for (size_t i = 0; i < MAX_GAME_OBJECTS_PER_LEVEL; i++)
     {
         GameObject& object = gameObjects[i];
@@ -74,6 +73,12 @@ bool Renderer::needRenderObject(GameObject& gameObject)
 void Renderer::fillOldGameObjectPositionToBackgroundColor(GameObject& gameObject)
 {
     Vector2 lastPosition = gameObject.getLastRenderedPosition();
+    Vector2 currentPosition = gameObject.getPosition();
+
+    if (lastPosition.x == currentPosition.x && lastPosition.y == currentPosition.y)
+    {
+        return;
+    }
     
     if (lastPosition.x >= 0 && lastPosition.x <= MAP_WIDTH && lastPosition.y >= 0 && lastPosition.y <= MAP_HEIGHT)
     {

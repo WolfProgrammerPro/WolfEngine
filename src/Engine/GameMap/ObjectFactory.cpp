@@ -36,6 +36,7 @@ void ObjectFactory::createDoor(GameObject* objects, int index, Vector2 position,
 
 void ObjectFactory::createObject(GameObject* objects, int index, Vector2 position, Vector2 size)
 {
+    objects[index].~GameObject();
     new(&objects[index]) GameObject(position, size);
 }
 

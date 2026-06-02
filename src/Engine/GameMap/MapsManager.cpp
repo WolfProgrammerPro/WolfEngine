@@ -28,6 +28,7 @@ void MapsManager::update(Renderer& renderer)
 
 void MapsManager::onGameRestarted()
 {
+    stats.reset();
     for (int mapIndex = 0; mapIndex < LEVEL_COUNT; mapIndex++)
     {
         maps[mapIndex].reset();

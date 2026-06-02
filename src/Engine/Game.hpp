@@ -5,6 +5,7 @@
 #include <Engine\GameMap\MapsManager.hpp>
 #include <Physics\Physics.hpp>
 #include <Engine\GameMap\MapsManagerRestarter.hpp>
+#include <Rendering\FPSCounter.hpp>
 
 class Game
 {
@@ -16,4 +17,5 @@ class Game
         MapsManager mapsManager;
         Physics physics;
         MapsManagerRestarter restarter;
+        FPSCounter fps;
 };

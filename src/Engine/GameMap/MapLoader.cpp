@@ -14,10 +14,9 @@ void MapLoader::load(GameObject* objects, int level)
     else
     {
         createPlayer(objects, Vector2{3,3});
-        createFinish(objects, Vector2{11, 3});
+        createWall(objects, Vector2{15,4}, Vector2{1,3});
+        createFinish(objects, Vector2{14, 3});
     }
-    
-
 }
 
 void MapLoader::createPlayer(GameObject* objects, Vector2 position)

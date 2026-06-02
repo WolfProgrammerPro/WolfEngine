@@ -13,4 +13,5 @@ public:
     void init(MapsManagerRestarter& restarter);
     int getCurrentLevel() {return currentLevel;}
     void nextLevel();
+    void reset() {currentLevel = 1;}
 };
