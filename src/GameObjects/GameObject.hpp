@@ -31,18 +31,18 @@ private:
 public:
     static unsigned long nextId;
     GameObject() {type = NONE;}
-    GameObject(Vector2 position, Vector2 size, GameObjectType objectType = NONE)
+    GameObject(Vector3 position, Vector3 size, GameObjectType objectType = NONE)
     {
         transform.setPosition(position);
         transform.setSize(size);
         uniqueId = nextId++;
-        graphicsComponent.writeLastRenderedPosition(Vector2{-1, -1});
+        graphicsComponent.writeLastRenderedPosition(Vector3{-1, -1, -1});
         graphicsComponent.writeLastRenderedActive(false);
     }
     void setMovementDirection(MovementDirector& director);
-    Vector2 getSize() {return transform.getSize();}
-    Vector2 getPosition() {return transform.getPosition();}
-    Vector2 getLastRenderedPosition() {return graphicsComponent.getLastRenderedPosition();}
+    Vector3 getSize() {return transform.getSize();}
+    Vector3 getPosition() {return transform.getPosition();}
+    Vector3 getLastRenderedPosition() {return graphicsComponent.getLastRenderedPosition();}
     bool isActive() {return active;}
     bool getLastRenderedActive() {return graphicsComponent.getLastRenderedActive();}
     GameObjectType getType() {return type;}
@@ -60,7 +60,7 @@ public:
         colliding = true;
         interactionIndex = 0;
         graphicsComponent.writeLastRenderedActive(false);
-        graphicsComponent.writeLastRenderedPosition(Vector2{-1, -1});
+        graphicsComponent.writeLastRenderedPosition(Vector3{-1, -1, -1});
     }
     void setInteractionIndex(int index) {interactionIndex = index;}
     int getInteractionIndex() const {return interactionIndex;}
@@ -70,7 +70,9 @@ public:
     void setMovementSpeed(float newSpeed) {movement.setMovementSpeed(newSpeed);}
     void setMovementCooldown(unsigned long cooldown) {movement.setMovementCooldown(cooldown);}
     void setColliderEventor(CollisionEventor& eventor) {collider.setCollisionEventor(eventor);}
-    void destroy() {active = false;}
+    void destroy() {active = false; }
+    void setCleared(bool cleared) {graphicsComponent.setObjectCleared(cleared);}
+    bool isCleared() const {return graphicsComponent.isCleared();}
     GameObject(const GameObject&) = delete;
     GameObject& operator=(const GameObject&) = delete;
 };

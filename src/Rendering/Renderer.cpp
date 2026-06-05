@@ -26,7 +26,7 @@ void Renderer::renderObject(GameObject& gameObject)
 {
     if (needRenderObject(gameObject))
     {
-        Vector2 pos = gameObject.getPosition();
+        Vector3 pos = gameObject.getPosition();
         
         fillOldGameObjectPositionToBackgroundColor(gameObject);
         
@@ -47,7 +47,12 @@ void Renderer::renderObject(GameObject& gameObject)
         }
         else
         {
-            display.fillDisplayRect(screenX, screenY, sizeX, sizeY, BACKGROUND_COLOR);
+            if (!gameObject.isCleared())
+            {
+                display.fillDisplayRect(screenX, screenY, sizeX, sizeY, BACKGROUND_COLOR);
+                gameObject.setCleared(true);
+            }
+            
         }
     }
 }
@@ -72,8 +77,8 @@ bool Renderer::needRenderObject(GameObject& gameObject)
 
 void Renderer::fillOldGameObjectPositionToBackgroundColor(GameObject& gameObject)
 {
-    Vector2 lastPosition = gameObject.getLastRenderedPosition();
-    Vector2 currentPosition = gameObject.getPosition();
+    Vector3 lastPosition = gameObject.getLastRenderedPosition();
+    Vector3 currentPosition = gameObject.getPosition();
 
     if (lastPosition.x == currentPosition.x && lastPosition.y == currentPosition.y)
     {

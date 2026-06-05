@@ -1,8 +1,8 @@
 #include <GameObjects\Components\PlayerMovementDirector.hpp>
 
-Vector2 PlayerMovementDirector::getDirection()
+Vector3 PlayerMovementDirector::getDirection()
 {
-   Vector2 _direction = vec2Zero;
+   Vector3 _direction = vec3Zero;
    Vector2 joystickRotation = input.getMovementJoystickRotation();
    if (joystickRotation.x >= 512 + MINIMAL_JOYSTICK_DEVIATION_TO_MOVE)
    {

@@ -5,11 +5,14 @@
 class GraphicsComponent
 {
 private:
-    Vector2 lastRenderedPosition;
+    Vector3 lastRenderedPosition;
     bool lastRenderedActive;
+    bool objectCleared = false;
 public:
-    void writeLastRenderedPosition(Vector2 position) {lastRenderedPosition = position;}
+    void writeLastRenderedPosition(Vector3 position) {lastRenderedPosition = position;}
     void writeLastRenderedActive(bool active) {lastRenderedActive = active;}
-    Vector2 getLastRenderedPosition() {return lastRenderedPosition;}
+    void setObjectCleared(bool cleared) {objectCleared = cleared;}
+    bool isCleared() const {return objectCleared;}
+    Vector3 getLastRenderedPosition() {return lastRenderedPosition;}
     bool getLastRenderedActive() {return lastRenderedActive;}
 };

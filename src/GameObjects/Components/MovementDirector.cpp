@@ -1,6 +1,6 @@
 #include <GameObjects\Components\MovementDirector.hpp>
 
-Vector2 MovementDirector::getDirection()
+Vector3 MovementDirector::getDirection()
 {
     return direction;
 }

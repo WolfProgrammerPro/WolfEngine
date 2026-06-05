@@ -32,7 +32,7 @@ GameObject* Physics::checkGameObjectGroupOnCollision(GameObject* objectGroup, Tr
     return nullptr;
 }
 
-bool Physics::hasLetToObjectMove(Map& map, Vector2 position, Vector2 size, unsigned short objectId)
+bool Physics::hasLetToObjectMove(Map& map, Vector3 position, Vector3 size, unsigned short objectId)
 {
     for (size_t i = 0; i < MAX_GAME_OBJECTS_PER_LEVEL; i++)
     {
@@ -41,8 +41,8 @@ bool Physics::hasLetToObjectMove(Map& map, Vector2 position, Vector2 size, unsig
             continue;
         }
         
-        Vector2 objPos = obj.getPosition();
-        Vector2 objSize = obj.getSize();
+        Vector3 objPos = obj.getPosition();
+        Vector3 objSize = obj.getSize();
 
         bool leftLess = position.x < objPos.x + objSize.x;
         bool rightGreater = position.x + size.x > objPos.x;
@@ -68,10 +68,10 @@ bool Physics::checkGameObjectOnCollision(Transform& obj1 , GameObject& obj2, uns
         return false;
     }
     
-    Vector2 object1Position = obj1.getPosition();
-    Vector2 object1Size = obj1.getSize();
-    Vector2 object2Position = obj2.getPosition();
-    Vector2 object2Size = obj2.getSize();
+    Vector3 object1Position = obj1.getPosition();
+    Vector3 object1Size = obj1.getSize();
+    Vector3 object2Position = obj2.getPosition();
+    Vector3 object2Size = obj2.getSize();
     
     bool leftLess = object1Position.x < object2Position.x + object2Size.x;
     bool rightGreater = object1Position.x + object1Size.x > object2Position.x;

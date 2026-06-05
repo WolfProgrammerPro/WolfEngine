@@ -14,7 +14,7 @@ class Physics
 {
 public:
     GameObject* getCollision(Map& map, Transform& transform, unsigned short toucherUniqueId);
-    bool hasLetToObjectMove(Map& map, Vector2 position, Vector2 size, unsigned short objectId);
+    bool hasLetToObjectMove(Map& map, Vector3 position, Vector3 size, unsigned short objectId);
     
 private:
     bool checkGameObjectOnCollision(Transform& obj1 , GameObject& obj2, unsigned short obj1UniqueId);

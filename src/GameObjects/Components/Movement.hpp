@@ -15,7 +15,7 @@ private:
     unsigned long lastMove;
     float movementSpeed;
     void move(Physics& physics, Transform& transform, Collider& collider, unsigned long uniqueId, Map& map);
-    void moveTo(Physics& physics, Transform& transform, Collider& collider, unsigned long uniqueId, Map& map, Vector2 position);
+    void moveTo(Physics& physics, Transform& transform, Collider& collider, unsigned long uniqueId, Map& map, Vector3 position);
 public:
     MovementDirector* movementDirector;
     

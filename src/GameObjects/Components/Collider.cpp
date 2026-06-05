@@ -2,7 +2,7 @@
 #include <Engine\GameMap\Map.hpp>
 #include <GameObjects\GameObject.hpp>
 
-bool Collider::canMoveToNewPosition(Physics& physics, Map& map, Transform& transform, Vector2 newPosition, unsigned long uniqueId)
+bool Collider::canMoveToNewPosition(Physics& physics, Map& map, Transform& transform, Vector3 newPosition, unsigned long uniqueId)
 {
     return physics.hasLetToObjectMove(map, newPosition, transform.getSize(), uniqueId);
 }

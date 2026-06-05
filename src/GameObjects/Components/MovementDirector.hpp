@@ -4,9 +4,9 @@
 class MovementDirector
 {
 private:
-    Vector2 direction;
+    Vector3 direction;
 public:
-    MovementDirector() {direction = vec2Zero;}
-    MovementDirector(Vector2 movementDirection) {direction = movementDirection;}
-    virtual Vector2 getDirection();
+    MovementDirector() {direction = vec3Zero;}
+    MovementDirector(Vector3 movementDirection) {direction = movementDirection;}
+    virtual Vector3 getDirection();
 };

@@ -6,5 +6,5 @@
 class TextureDrawer
 {
     public:
-    void drawTexture(Display& display, const uint16_t* pixels, int screenPositionX, int screenPositionY, Vector2 textureSize);
+    void drawTexture(Display& display, const uint16_t* pixels, int screenPositionX, int screenPositionY, Vector3 textureSize);
 };

@@ -15,8 +15,8 @@ void Movement::move(Physics& physics, Transform& transform, Collider& collider, 
     if (getMillis() - lastMove >= moveCooldown)
     {
         lastMove = getMillis();
-        Vector2 oldPosition = transform.getPosition();
-        Vector2 newPosition = oldPosition + movementDirector->getDirection() * movementSpeed;
+        Vector3 oldPosition = transform.getPosition();
+        Vector3 newPosition = oldPosition + movementDirector->getDirection() * movementSpeed;
         if (newPosition != transform.getPosition())
         {
             moveTo(physics, transform, collider, uniqueId, map, newPosition);
@@ -25,16 +25,10 @@ void Movement::move(Physics& physics, Transform& transform, Collider& collider, 
     }
 }
 
-void Movement::moveTo(Physics& physics, Transform& transform, Collider& collider, unsigned long uniqueId, Map& map, Vector2 position)
+void Movement::moveTo(Physics& physics, Transform& transform, Collider& collider, unsigned long uniqueId, Map& map, Vector3 position)
 {
-
     if (collider.canMoveToNewPosition(physics, map, transform, position, uniqueId))
     {
-        
         transform.setPosition(position);
-    }
-    else
-    {
-        print("cant move");
     }
 }

@@ -6,7 +6,7 @@
 class PlayerMovementDirector : public MovementDirector
 {
 public:
-    PlayerMovementDirector() : MovementDirector(vec2Zero) {};
-    Vector2 getDirection() override;
+    PlayerMovementDirector() : MovementDirector(vec3Zero) {};
+    Vector3 getDirection() override;
     InputManager input;
 };

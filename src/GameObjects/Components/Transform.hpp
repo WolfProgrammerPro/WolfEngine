@@ -5,12 +5,16 @@
 class Transform
 {
 private:
-    Vector2 position;
-    Vector2 size;
+    Vector3 position;
+    Vector3 rotation;
+    Vector3 size;
+    float normalizeDegrees(float degrees);
 
 public:
-    void setPosition(Vector2 newPosition);
-    void setSize(Vector2 newSize) {size = newSize;}
-    Vector2 getSize() {return size;}
-    Vector2 getPosition() {return position;}
+    void setPosition(Vector3 newPosition);
+    void setSize(Vector3 newSize) {size = newSize;}
+    void setRotation(Vector3 newRotation);
+    Vector3 getSize() {return size;}
+    Vector3 getPosition() {return position;}
+    Vector3 getRotation() {return rotation;}
 };

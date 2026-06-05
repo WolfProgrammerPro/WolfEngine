@@ -1,13 +1,20 @@
 #include <GameObjects\Components\Transform.hpp>
 
-void Transform::setPosition(Vector2 newPosition)
+void Transform::setPosition(Vector3 newPosition)
 {
-    if (newPosition.x + size.x <= MAP_WIDTH && newPosition.x >= 0)
-    {
-        position.x = newPosition.x;
-    }
-    if (newPosition.y + size.y <= MAP_HEIGHT && newPosition.y >= 0)
-    {
-        position.y = newPosition.y;
-    }
+    position.x = newPosition.x;
+    position.y = newPosition.y;
+    position.z = newPosition.z;
+}
+
+void Transform::setRotation(Vector3 newRotation)
+{
+    rotation.x = normalizeDegrees(newRotation.x);
+    rotation.y = normalizeDegrees(newRotation.y);
+    rotation.z = normalizeDegrees(newRotation.z);
+}
+
+float Transform::normalizeDegrees(float degrees)
+{
+    return 0;
 }

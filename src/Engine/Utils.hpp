@@ -11,7 +11,7 @@
 #define STARTER_PLAYER_POSITION_Y 3
 #define MINIMAL_JOYSTICK_DEVIATION_TO_MOVE 500
 #define JOYSTICK_READ_MINIMAL_COOLDOWN 25
-#define LEVEL_COUNT 2
+#define LEVEL_COUNT 3
 #define MAX_GAME_OBJECTS_PER_LEVEL 10
 #define PLAYER_SIZE_X 1
 #define PLAYER_SIZE_Y 1
@@ -40,7 +40,7 @@
 #define FPS_TEXT_POSITION_Y 5
 #define FPS_TEXT_SIZE 1
 #define FPS_TEXT_COLOR COLOR_WHITE
-#define FPS_BACKGROUND_SIZE_X 46
+#define FPS_BACKGROUND_SIZE_X 50
 #define FPS_BACKGROUND_SIZE_Y 10
 #define FPS_SHOW_DELAY 500
 
@@ -65,6 +65,17 @@ struct Vector2
 {
     float x;
     float y;
+
+    Vector2(float _x, float _y)
+    {
+        x = _x;
+        y = _y;
+    }
+    Vector2()
+    {
+        x = 0;
+        y = 0;
+    }
 
     bool operator==(const Vector2& other) const
     {
@@ -99,6 +110,19 @@ struct Vector3
     float y;
     float z;
 
+    Vector3(float _x, float _y, float _z)
+    {
+        x = _x;
+        y = _y;
+        z = _z;
+    }
+    Vector3()
+    {
+        x = 0;
+        y = 0;
+        z = 0;
+    }
+
     bool operator==(const Vector3& other) const
     {
         return x == other.x && y == other.y && z == other.z;
@@ -108,7 +132,7 @@ struct Vector3
     {
         return x != other.x || y != other.y || z != other.z;
     }
-    Vector3 operator*(short scalar) const
+    Vector3 operator*(float scalar) const
     {
         Vector3 result;
         result.x = x * scalar;
@@ -126,6 +150,7 @@ struct Vector3
         return result;
     }
 };
-const Vector2 vec2Zero = {0,0};
-const Vector3 vec3Zero = {0,0,0};
+const Vector2 vec2Zero = Vector2(0,0);
+const Vector3 vec3Zero = Vector3(0,0,0);
 
+#define MAX_ROTATION 360
